@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RestChat</title>
+    <!-- Include Highlight.js stylesheet for syntax highlighting -->
+    <link rel="stylesheet" href="//unpkg.com/@catppuccin/highlightjs@1.0.0/css/catppuccin-mocha.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+    <!-- Include Highlight.js script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <button id="theme-selector">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+    <div id="theme-options">
+        <button data-value="light" class="option"><i class="fa-solid fa-sun"></i> Light</button>
+        <button data-value="dark" class="option"><i class="fa-solid fa-moon"></i> Dark</button>
+        <button data-value="auto" class="option"><i class="fa-solid fa-moon"></i> System</button>
+    </div>
+    <div id="messages">
+        <div class="bot">Hello! 👋 It's a pleasure to meet you. What can I do for you today?</div>
+    </div>
+    <div id="chat-form">
+        <form>
+            <input type="text" placeholder="Ask me anything" name="prompt" id="prompt" /><button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</body>
+</html>

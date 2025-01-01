@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+html[data-theme="dark"]:root {
+    --primary-color: #11111b;
+    --secondary-color: #cdd6f4;
+    --hover-color: #bac2de;
+    --input-color: #181825;
+    --tertiary-color: #b4befe;
+}
+html[data-theme="dark"] .option[data-value="dark"] {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+html[data-theme="light"] .option[data-value="light"] {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+html[data-theme="auto"] .option[data-value="auto"] {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+@media screen and (prefers-color-scheme: dark) {
+    html[data-theme="auto"] {
+        --primary-color: #11111b;
+        --secondary-color: #cdd6f4;
+        --hover-color: #bac2de;
+        --input-color: #181825;
+        --tertiary-color: #b4befe;
+    }
+}
+@media screen and (prefers-color-scheme: light) {
+    html[data-theme="auto"] {
+        --primary-color: #dce0e8;
+        --secondary-color: #181825;
+        --hover-color: #11111b;
+        --input-color: #e6e9ef;
+    }
+}
+html[data-theme="light"]:root {
+    --primary-color: #dce0e8;
+    --secondary-color: #181825;
+    --hover-color: #11111b;
+    --input-color: #e6e9ef;
+}
+::selection {
+    background-color: #a6e3a1;
+    color: #11111b;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    gap: 0;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    font-family: 'Roboto Mono', monospace;
+}
+code {
+    padding: 2%;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: #cdd6f4;
+    gap: 4px;
+    line-height: 1.5;
+}
+code span {
+    background: none !important;
+}
+.code-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: fit-content;
+    width: 100%;
+    gap: 0;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    color: #cdd6f4;
+}
+.code-header button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #cdd6f4 !important;
+    cursor: pointer;
+}
+.code-container {
+    width: fit-content;
+    max-width: 600px;
+    background-color: #1e1e2e;
+    padding: 4%;
+    padding-top: 1%;
+    border-radius: 20px;
+    overflow: auto;
+}
+#chat-form {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    position: fixed;
+    z-index: 9999999;
+    bottom: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1%;
+}
+
+#chat-form form {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+}
+
+#theme-selector {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 9999999;
+    top: 1%;
+    right: 1%;
+    border: none;
+    text-decoration: none;
+    aspect-ratio: 1/1;
+    padding: 20px;
+    border-radius: 50%;
+    font-size: 16px;
+    margin: 0;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+#theme-selector:hover {
+    background-color: var(--hover-color);
+}
+
+#theme-options {
+    flex-direction: column;
+    position: fixed;
+    z-index: 9999999;
+    top: 60px;
+    right: 60px;
+    display: none;
+}
+
+.visible {
+    display: flex !important;
+    animation: pop 0.2s ease-in-out;
+}
+
+@keyframes pop {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.option {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    cursor: pointer;
+    color: var(--secondary-color);
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    outline: none;
+    border: none;
+}
+
+.option:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+@media (pointer: coarse) {
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--hover-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 20px;
+}
+
+#chat-form input {
+    width: 70vw;
+    flex-grow: 1;
+    outline: none;
+    border: none;
+    margin: 0;
+    padding: 15px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    background-color: var(--input-color);
+    color: var(--secondary-color);
+    font-family: 'Roboto Mono', monospace;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#chat-form button {
+    border: none;
+    padding: 15px 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 16px;
+    width: 5vw;
+    margin: 0;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#chat-form button:hover {
+    background-color: var(--hover-color);
+}
+
+#messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 2%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 70vw;
+    height: 80vh;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#messages .prompt {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 20px;
+    display: block;
+    max-width: 50%;
+    margin-left: auto;
+    animation: appear 0.5s ease-in-out;
+}
+
+#messages .bot {
+    animation: appear 0.5s ease-in-out;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+#messages .prompt, #messages .bot {
+    padding: 2%;
+    font-size: 30px;
+    font-family: 'Roboto Mono', monospace;
+}
+
