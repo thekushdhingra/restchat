@@ -1,6 +1,6 @@
 # Chatbot Made with Ollama and Flask
 ## Instructions to run the App
-Before starting install, Download and install [ollama][(https://ollama.com/download)
+Before starting install, Download and install [ollama] (https://ollama.com/download)
 Now Download gemma AI model using
 ```bash
 ollama pull gemma:2b
