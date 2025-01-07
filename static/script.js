@@ -8,6 +8,7 @@ function copyCodeToClipboard(event, code) {
         console.error('Failed to copy: ', err);
     });
 }
+
 document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById('theme-selector');
     const selector = document.getElementById('theme-options');
@@ -20,11 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function processInlineMarkdown(text) {
-        // Process inline markdown like **bold**, *italic*, and `code`
+        // Process inline markdown like **bold**, *italic*, `code`, and lists
         return text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
             .replace(/\*(.*?)\*/g, '<em>$1</em>')           // Italics
-            .replace(/`(.*?)`/g, '<code>$1</code>');         // Inline code
+            .replace(/`(.*?)`/g, '<code>$1</code>')         // Inline code
+            .replace(/^- (.*?)(\n|$)/gm, '<ul><li>$1</li></ul>') // Unordered list
+            .replace(/^[0-9]+\.\s(.*?)(\n|$)/gm, '<ol><li>$1</li></ol>'); // Ordered list
     }
 
     function convertMarkdownToHTML(markdown) {
@@ -33,12 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
         let inCodeBlock = false;
         let codeBlockContent = [];
         let codeLanguage = null;
+        let inList = false;
+        let isOrderedList = false;
 
         lines.forEach(line => {
-            // Check if we're inside a code block
             if (line.startsWith("```")) {
                 if (inCodeBlock) {
-                    // Closing code block
                     htmlOutput.push(`
                         <div class="code-container">
                             <div class="code-header">
@@ -54,32 +57,54 @@ document.addEventListener("DOMContentLoaded", () => {
                     codeBlockContent = [];
                     codeLanguage = null;
                 } else {
-                    // Opening code block: check for language specification
-                    const match = line.match(/^```(\w+)?/); // Match for language like ```js or just ```
-                    codeLanguage = match ? match[1] : null; // Extract language or set to null if none
+                    const match = line.match(/^```(\w+)?/);
+                    codeLanguage = match ? match[1] : null;
                     inCodeBlock = true;
                 }
             } else if (inCodeBlock) {
-                // Inside a code block, accumulate code lines
                 codeBlockContent.push(line);
             } else {
-                // Process headings
                 if (line.startsWith("### ")) {
                     htmlOutput.push(`<h3>${processInlineMarkdown(line.slice(4))}</h3>`);
                 } else if (line.startsWith("## ")) {
                     htmlOutput.push(`<h2>${processInlineMarkdown(line.slice(3))}</h2>`);
                 } else if (line.startsWith("# ")) {
                     htmlOutput.push(`<h1>${processInlineMarkdown(line.slice(2))}</h1>`);
-                } else if (line.trim() === "") {
-                    htmlOutput.push(""); // Empty lines result in no output
+                } else if (/^- /.test(line)) {
+                    if (!inList || isOrderedList) {
+                        if (inList) htmlOutput.push(isOrderedList ? '</ol>' : '</ul>');
+                        htmlOutput.push('<ul>');
+                        inList = true;
+                        isOrderedList = false;
+                    }
+                    htmlOutput.push(`<li>${processInlineMarkdown(line.slice(2))}</li>`);
+                } else if (/^[0-9]+\./.test(line)) {
+                    if (!inList || !isOrderedList) {
+                        if (inList) htmlOutput.push(isOrderedList ? '</ol>' : '</ul>');
+                        htmlOutput.push('<ol>');
+                        inList = true;
+                        isOrderedList = true;
+                    }
+                    htmlOutput.push(`<li>${processInlineMarkdown(line.replace(/^[0-9]+\.\s/, ''))}</li>`);
                 } else {
-                    // Default to paragraphs
-                    htmlOutput.push(`<p>${processInlineMarkdown(line)}</p>`);
+                    if (inList) {
+                        htmlOutput.push(isOrderedList ? '</ol>' : '</ul>');
+                        inList = false;
+                        isOrderedList = false;
+                    }
+                    if (line.trim() === "") {
+                        htmlOutput.push("");
+                    } else {
+                        htmlOutput.push(`<p>${processInlineMarkdown(line)}</p>`);
+                    }
                 }
             }
         });
 
-        // If we end with an unclosed code block, handle it
+        if (inList) {
+            htmlOutput.push(isOrderedList ? '</ol>' : '</ul>');
+        }
+
         if (inCodeBlock) {
             htmlOutput.push(`<div class="code-container">
                                 <div class="code-header">
@@ -92,19 +117,15 @@ document.addEventListener("DOMContentLoaded", () => {
                              </div>`);
         }
 
-        // Join and return the final HTML output
         const resultHTML = htmlOutput.join("\n");
 
-        // Apply syntax highlighting
         setTimeout(() => {
-            // Re-run highlight.js on the newly inserted content
             hljs.highlightAll();
-        }, 0); // Use a small delay to ensure DOM update before highlight.js runs
+        }, 5);
 
         return resultHTML;
     }
 
-    // Function to escape HTML characters to avoid XSS vulnerabilities
     function escapeHtml(text) {
         return text.replace(/[&<>"']/g, (match) => {
             const escapeMap = {
@@ -115,14 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "'": '&#039;'
             };
             return escapeMap[match];
-        });
-    }
-
-    function copyCodeToClipboard(event, code) {
-        navigator.clipboard.writeText(code).then(() => {
-            alert('Code copied to clipboard!');
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
         });
     }
 
@@ -188,3 +201,4 @@ document.addEventListener("DOMContentLoaded", () => {
         chat();
     });
 });
+

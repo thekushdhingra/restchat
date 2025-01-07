@@ -19,7 +19,7 @@ def chat():
             model="gemma:2b",
             messages=[
                 {"role": "user", "content": prompt},
-                {"role": "system", "content": "You are a helpful assistant. You answer in markdown, you also give code in markdown if they ask to write a programme!"},
+                {"role": "system", "content": "You are a helpful assistant. You answer in markdown, you also give code in markdown if they ask to write a programme! You also have the ability to use markdown to write stuff!"},
             ]
         )
         
