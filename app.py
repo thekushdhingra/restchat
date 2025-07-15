@@ -16,7 +16,7 @@ def chat():
     try:
         # Get the response from the model
         response = ollama.chat(
-            model="gemma:2b",
+            model="mistral",
             messages=[
                 {"role": "user", "content": prompt},
                 {"role": "system", "content": "You are a helpful assistant. You answer in markdown, you also give code in markdown if they ask to write a programme! You also have the ability to use markdown to write stuff!"},
